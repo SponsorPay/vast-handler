@@ -12,7 +12,7 @@ describe('vastHandler', () => {
     });
 
     it('should have always returned hello', () => {
-      expect(vastHandler.greet).to.have.always.returned('hello');
+      expect(vastHandler.greet).to.have.always.returned('hello world!');
     });
   });
 });

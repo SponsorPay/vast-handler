@@ -1,6 +1,6 @@
 const vastHandler = {
   greet() {
-    return 'hello';
+    return 'hello world!';
   }
 };
 
