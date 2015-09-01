@@ -18,42 +18,48 @@ For now, clone repo and (if needed outside as globals) run `gulp build`.
 
 If you want to use VASTHandler as is, simply require the main module in:
 
-    var vastHandler = require('vast-handler');
+```js
+var vastHandler = require('vast-handler');
+```
 
 This gives you a clean API to fetch and parse VAST Tags:
 
-    vastHandler.get('http://some-provider.com/vast.xml')
-      .then(vastHandler.parseVast)
-      .then(function(vastResponse) {
-        playVideo(vastResponse); // Or, you know. Whatever
-      }).catch(function(e){
-        Rollbar.error(e); // Or deal with errors some other way.
-      })
+```js
+vastHandler.get('http://some-provider.com/vast.xml')
+  .then(vastHandler.parseVast)
+  .then(function(vastResponse) {
+    playVideo(vastResponse); // Or, you know. Whatever
+  }).catch(function(e){
+    Rollbar.error(e); // Or deal with errors some other way.
+  });
+```
 
 ### Composing a custom client
 
 If you'd prefer to deal with errors, fetching or parsing yourself,
 you can load individual modules from this package, like so:
 
-    var get = require('vast-handler/url-handler-fetch');
-    // Currying is recommended here because of potential wrappers.
-    var parseVast = function(get){
-      return function(xmlResponse) {
-        return new Promise(function(resolve, reject){
-          // implement your own parsing logic here,
-          // follow a wrapper etc.
-        });
-      };
-    }
+```js
+var get = require('vast-handler/url-handler-fetch');
+// Currying is recommended here because of potential wrappers.
+var parseVast = function(get){
+  return function(xmlResponse) {
+    return new Promise(function(resolve, reject){
+      // implement your own parsing logic here,
+      // follow a wrapper etc.
+    });
+  };
+}
 
-    get('http://some-provider.com/vast.xml')
-      .then(parseVast(get))
-      .then(function(vastResponse){
-        playVideo(vastResponse);
-      })
-      .catch(function(e){
-        Rollbar.error(e);
-      });
+get('http://some-provider.com/vast.xml')
+  .then(parseVast(get))
+  .then(function(vastResponse){
+    playVideo(vastResponse);
+  })
+  .catch(function(e){
+    Rollbar.error(e);
+  });
+```
 
 Feel free to pick and match as fits your needs.
 
